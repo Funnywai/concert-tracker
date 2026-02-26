@@ -17,11 +17,11 @@ const getTicketTypeColor = (type: string) => {
   switch (type) {
     case 'VIP Standing':
       return 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400';
-    case 'VIP Seating':
+    case 'VIP Seat':
       return 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400';
     case 'General Standing':
       return 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400';
-    case 'General Seating':
+    case 'General Seat':
       return 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400';
     default:
       return 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400';

@@ -1,6 +1,6 @@
 export type Currency = 'USD' | 'KRW' | 'HKD' | 'EUR' | 'GBP' | 'JPY' | 'CNY' | 'TWD';
 
-export type TicketType = 'VIP Standing' | 'VIP Seating' | 'General Standing' | 'General Seating';
+export type TicketType = 'VIP Standing' | 'VIP Seat' | 'General Standing' | 'General Seat';
 
 export const CURRENCIES: { value: Currency; label: string; symbol: string }[] = [
   { value: 'KRW', label: 'KRW (₩)', symbol: '₩' },
@@ -15,9 +15,9 @@ export const CURRENCIES: { value: Currency; label: string; symbol: string }[] = 
 
 export const TICKET_TYPES: TicketType[] = [
   'VIP Standing',
-  'VIP Seating',
+  'VIP Seat',
   'General Standing',
-  'General Seating',
+  'General Seat',
 ];
 
 export interface Concert {
