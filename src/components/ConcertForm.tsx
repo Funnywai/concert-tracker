@@ -10,7 +10,7 @@ interface ConcertFormProps {
 }
 
 const CURRENCIES: Currency[] = ['KRW', 'HKD', 'USD', 'JPY', 'EUR', 'GBP', 'CNY', 'TWD', 'SGD'];
-const TICKET_TYPES: TicketType[] = ['VIP Standing', 'VIP Seating', 'General Standing', 'General Seating'];
+const TICKET_TYPES: TicketType[] = ['VIP Standing', 'VIP Seat', 'General Standing', 'General Seat'];
 
 export const ConcertForm: React.FC<ConcertFormProps> = ({ 
   initialData, 
