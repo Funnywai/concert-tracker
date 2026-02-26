@@ -10,7 +10,7 @@ interface ConcertFormProps {
 }
 
 const CURRENCIES: Currency[] = ['KRW', 'HKD', 'USD', 'JPY', 'EUR', 'GBP', 'CNY', 'TWD', 'SGD'];
-const TICKET_TYPES: TicketType[] = ['VIP', 'General', 'Premium', 'Standing', 'Box Seat', 'Balcony', 'Other'];
+const TICKET_TYPES: TicketType[] = ['VIP Standing', 'VIP Seating', 'General Standing', 'General Seating'];
 
 export const ConcertForm: React.FC<ConcertFormProps> = ({ 
   initialData, 
@@ -25,7 +25,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
     location: '',
     price: '',
     currency: 'KRW' as Currency,
-    ticketType: 'General' as TicketType,
+    ticketType: 'General Standing' as TicketType,
     seat: '',
     notes: ''
   });
@@ -45,7 +45,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
         location: initialData.location,
         price: initialData.price.toString(),
         currency: initialData.currency || 'KRW',
-        ticketType: initialData.ticketType || 'General',
+        ticketType: initialData.ticketType || 'General Standing',
         seat: initialData.seat,
         notes: initialData.notes || ''
       });
@@ -76,7 +76,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
           <div>
-            <label className="block text-sm font-medium text-zinc-500 mb-1">Show Title (Optional)</label>
+            <label className="block text-sm font-medium text-zinc-500 mb-1">Show Title</label>
             <input
               type="text"
               value={formData.title}

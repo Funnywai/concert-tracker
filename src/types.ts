@@ -1,6 +1,6 @@
 export type Currency = 'KRW' | 'HKD' | 'USD' | 'JPY' | 'EUR' | 'GBP' | 'CNY' | 'TWD' | 'SGD';
 
-export type TicketType = 'VIP' | 'General' | 'Premium' | 'Standing' | 'Box Seat' | 'Balcony' | 'Other';
+export type TicketType = 'VIP Standing' | 'VIP Seating' | 'General Standing' | 'General Seating';
 
 export interface Concert {
   id: string;
