@@ -16,14 +16,10 @@ export function App() {
 
   // Subscribe to Firebase Realtime Database
   useEffect(() => {
-    const unsubscribe = subscribeToConcerts((data) => {
+    subscribeToConcerts((data) => {
       setConcerts(data);
       setIsLoaded(true);
     });
-
-    return () => {
-      // Cleanup if needed
-    };
   }, []);
 
   const sortedConcerts = useMemo(() => {
@@ -41,7 +37,9 @@ export function App() {
         : concertDate < now;
       
       const matchesSearch = concert.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            concert.location.toLowerCase().includes(searchQuery.toLowerCase());
+                            concert.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            (concert.title && concert.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                            concert.ticketType.toLowerCase().includes(searchQuery.toLowerCase());
       
       return isCorrectTab && matchesSearch;
     });

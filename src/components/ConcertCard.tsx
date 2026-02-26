@@ -1,6 +1,6 @@
 import React from 'react';
 import { Concert } from '../types';
-import { MapPin, Ticket, Armchair, ChevronRight } from 'lucide-react';
+import { MapPin, Ticket, Armchair, ChevronRight, Tag } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface ConcertCardProps {
@@ -23,20 +23,31 @@ export const ConcertCard: React.FC<ConcertCardProps> = ({ concert, onClick }) =>
       
       <div className="flex-grow min-w-0">
         <h3 className="font-bold text-lg truncate text-zinc-900 dark:text-white">{concert.artist}</h3>
+        {concert.title && (
+          <div className="flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 text-xs mt-0.5">
+            <Tag size={12} />
+            <span className="truncate">{concert.title}</span>
+          </div>
+        )}
         <div className="flex flex-col gap-1 mt-1">
           <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 text-sm">
             <MapPin size={14} />
             <span className="truncate">{concert.location}</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 text-xs">
               <Ticket size={14} />
-              <span>${concert.price}</span>
+              <span>{concert.ticketType}</span>
             </div>
             <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 text-xs">
-              <Armchair size={14} />
-              <span>{concert.seat}</span>
+              <span className="font-medium">{concert.price.toLocaleString()} {concert.currency}</span>
             </div>
+            {concert.seat && (
+              <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 text-xs">
+                <Armchair size={14} />
+                <span>{concert.seat}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Concert } from '../types';
+import { Concert, Currency, TicketType } from '../types';
 import { X } from 'lucide-react';
 
 interface ConcertFormProps {
@@ -9,6 +9,9 @@ interface ConcertFormProps {
   onDelete?: (id: string) => void;
 }
 
+const CURRENCIES: Currency[] = ['KRW', 'HKD', 'USD', 'JPY', 'EUR', 'GBP', 'CNY', 'TWD', 'SGD'];
+const TICKET_TYPES: TicketType[] = ['VIP', 'General', 'Premium', 'Standing', 'Box Seat', 'Balcony', 'Other'];
+
 export const ConcertForm: React.FC<ConcertFormProps> = ({ 
   initialData, 
   onSubmit, 
@@ -17,20 +20,32 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
 }) => {
   const [formData, setFormData] = useState({
     artist: '',
+    title: '',
     date: new Date().toISOString().slice(0, 16),
     location: '',
     price: '',
+    currency: 'KRW' as Currency,
+    ticketType: 'General' as TicketType,
     seat: '',
     notes: ''
   });
+
+  // Set default currency based on user's location (optional enhancement)
+  useEffect(() => {
+    // You could detect user location here and set default currency
+    // For now, KRW is the default
+  }, []);
 
   useEffect(() => {
     if (initialData) {
       setFormData({
         artist: initialData.artist,
+        title: initialData.title || '',
         date: initialData.date.slice(0, 16),
         location: initialData.location,
         price: initialData.price.toString(),
+        currency: initialData.currency || 'KRW',
+        ticketType: initialData.ticketType || 'General',
         seat: initialData.seat,
         notes: initialData.notes || ''
       });
@@ -61,6 +76,17 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
           <div>
+            <label className="block text-sm font-medium text-zinc-500 mb-1">Show Title (Optional)</label>
+            <input
+              type="text"
+              value={formData.title}
+              onChange={e => setFormData({ ...formData, title: e.target.value })}
+              className="w-full p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none focus:ring-2 focus:ring-indigo-500 outline-none"
+              placeholder="Tour name or show title"
+            />
+          </div>
+
+          <div>
             <label className="block text-sm font-medium text-zinc-500 mb-1">Artist / Band</label>
             <input
               required
@@ -84,6 +110,21 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
               />
             </div>
             <div>
+              <label className="block text-sm font-medium text-zinc-500 mb-1">Ticket Type</label>
+              <select
+                value={formData.ticketType}
+                onChange={e => setFormData({ ...formData, ticketType: e.target.value as TicketType })}
+                className="w-full p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none focus:ring-2 focus:ring-indigo-500 outline-none"
+              >
+                {TICKET_TYPES.map(type => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
               <label className="block text-sm font-medium text-zinc-500 mb-1">Price</label>
               <input
                 type="number"
@@ -93,6 +134,18 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
                 className="w-full p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="0.00"
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-500 mb-1">Currency</label>
+              <select
+                value={formData.currency}
+                onChange={e => setFormData({ ...formData, currency: e.target.value as Currency })}
+                className="w-full p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none focus:ring-2 focus:ring-indigo-500 outline-none"
+              >
+                {CURRENCIES.map(currency => (
+                  <option key={currency} value={currency}>{currency}</option>
+                ))}
+              </select>
             </div>
           </div>
 
