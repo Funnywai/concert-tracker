@@ -16,9 +16,10 @@ export const ConcertCard: React.FC<ConcertCardProps> = ({ concert, onClick }) =>
       onClick={() => onClick(concert)}
       className="bg-white dark:bg-zinc-900 p-4 rounded-2xl shadow-sm border border-zinc-100 dark:border-zinc-800 flex items-center gap-4 active:scale-95 transition-transform cursor-pointer"
     >
-      <div className="flex-shrink-0 w-14 h-14 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex flex-col items-center justify-center text-indigo-600 dark:text-indigo-400">
+      <div className="flex-shrink-0 w-14 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex flex-col items-center justify-center text-indigo-600 dark:text-indigo-400">
         <span className="text-xs font-bold uppercase">{format(date, 'MMM')}</span>
-        <span className="text-xl font-black">{format(date, 'dd')}</span>
+        <span className="text-lg font-black leading-none">{format(date, 'dd')}</span>
+        <span className="text-[10px] font-semibold leading-none">{format(date, 'yyyy')}</span>
       </div>
       
       <div className="flex-grow min-w-0">
