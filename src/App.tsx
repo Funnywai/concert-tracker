@@ -4,23 +4,27 @@ import { ConcertCard } from './components/ConcertCard';
 import { ConcertForm } from './components/ConcertForm';
 import { TabNavigation } from './components/TabNavigation';
 import { Music, Plus, Search } from 'lucide-react';
-
-const STORAGE_KEY = 'concert-tracker-data';
+import { saveConcert, deleteConcert, subscribeToConcerts } from './firebase';
 
 export function App() {
-  const [concerts, setConcerts] = useState<Concert[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : [];
-  });
-  
+  const [concerts, setConcerts] = useState<Concert[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingConcert, setEditingConcert] = useState<Concert | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Subscribe to Firebase Realtime Database
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(concerts));
-  }, [concerts]);
+    const unsubscribe = subscribeToConcerts((data) => {
+      setConcerts(data);
+      setIsLoaded(true);
+    });
+
+    return () => {
+      // Cleanup if needed
+    };
+  }, []);
 
   const sortedConcerts = useMemo(() => {
     return [...concerts].sort((a, b) => 
@@ -43,26 +47,33 @@ export function App() {
     });
   }, [sortedConcerts, activeTab, searchQuery]);
 
-  const handleAddConcert = (data: Omit<Concert, 'id'>) => {
+  const handleAddConcert = async (data: Omit<Concert, 'id'>) => {
     const newConcert: Concert = {
       ...data,
       id: crypto.randomUUID()
     };
-    setConcerts(prev => [...prev, newConcert]);
+    
+    // Save to Firebase
+    await saveConcert(newConcert.id, newConcert);
+    
     setIsFormOpen(false);
   };
 
-  const handleUpdateConcert = (data: Omit<Concert, 'id'>) => {
+  const handleUpdateConcert = async (data: Omit<Concert, 'id'>) => {
     if (!editingConcert) return;
-    setConcerts(prev => prev.map(c => 
-      c.id === editingConcert.id ? { ...data, id: c.id } : c
-    ));
+    
+    const updatedConcert = { ...data, id: editingConcert.id };
+    
+    // Update in Firebase
+    await saveConcert(updatedConcert.id, updatedConcert);
+    
     setEditingConcert(null);
   };
 
-  const handleDeleteConcert = (id: string) => {
+  const handleDeleteConcert = async (id: string) => {
     if (confirm('Are you sure you want to remove this concert from your list?')) {
-      setConcerts(prev => prev.filter(c => c.id !== id));
+      // Delete from Firebase
+      await deleteConcert(id);
       setEditingConcert(null);
     }
   };
@@ -102,7 +113,14 @@ export function App() {
 
       {/* Main Content */}
       <main className="px-6 py-4">
-        {filteredConcerts.length > 0 ? (
+        {!isLoaded ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center text-zinc-400">
+            <div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-900 rounded-full flex items-center justify-center mb-4 animate-pulse">
+              <Music size={32} />
+            </div>
+            <p className="text-lg font-medium">Loading concerts...</p>
+          </div>
+        ) : filteredConcerts.length > 0 ? (
           <div className="flex flex-col gap-4">
             {filteredConcerts.map(concert => (
               <ConcertCard 
