@@ -112,7 +112,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
                 type="date"
                 value={formData.date}
                 onChange={e => setFormData({ ...formData, date: e.target.value })}
-                className="w-full p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none appearance-none focus:ring-2 focus:ring-indigo-500 outline-none"
               />
             </div>
             <div>
@@ -120,7 +120,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
               <select
                 value={formData.ticketType}
                 onChange={e => setFormData({ ...formData, ticketType: e.target.value as TicketType })}
-                className="w-full h-12 p-3 pr-10 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none appearance-none focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full h-12 p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none appearance-none focus:ring-2 focus:ring-indigo-500 outline-none"
               >
                 {TICKET_TYPES.map(type => (
                   <option key={type} value={type}>{type}</option>
@@ -146,7 +146,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
               <select
                 value={formData.currency}
                 onChange={e => setFormData({ ...formData, currency: e.target.value as Currency })}
-                className="w-full h-12 p-3 pr-10 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none appearance-none focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full h-12 p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none appearance-none focus:ring-2 focus:ring-indigo-500 outline-none"
               >
                 {CURRENCIES.map(currency => (
                   <option key={currency} value={currency}>{currency}</option>
