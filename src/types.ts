@@ -6,7 +6,7 @@ export interface Concert {
   id: string;
   artist: string;
   title?: string; // New: Title of the show
-  date: string; // ISO string
+  date: string; // Date string (YYYY-MM-DD)
   location: string;
   price: number;
   currency: Currency; // New: Currency selection

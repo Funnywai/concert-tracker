@@ -12,6 +12,12 @@ interface ConcertFormProps {
 const CURRENCIES: Currency[] = ['KRW', 'HKD', 'USD', 'JPY', 'EUR', 'GBP', 'CNY', 'TWD', 'SGD'];
 const TICKET_TYPES: TicketType[] = ['VIP Standing', 'VIP Seat', 'General Standing', 'General Seat'];
 
+const toDateInputValue = (value?: string) => {
+  if (!value) return new Date().toISOString().slice(0, 10);
+  if (value.includes('T')) return value.slice(0, 10);
+  return value;
+};
+
 export const ConcertForm: React.FC<ConcertFormProps> = ({ 
   initialData, 
   onSubmit, 
@@ -21,7 +27,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
   const [formData, setFormData] = useState({
     artist: '',
     title: '',
-    date: new Date().toISOString().slice(0, 16),
+    date: new Date().toISOString().slice(0, 10),
     location: '',
     price: '',
     currency: 'KRW' as Currency,
@@ -41,7 +47,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
       setFormData({
         artist: initialData.artist,
         title: initialData.title || '',
-        date: initialData.date.slice(0, 16),
+        date: toDateInputValue(initialData.date),
         location: initialData.location,
         price: initialData.price.toString(),
         currency: initialData.currency || 'KRW',
@@ -57,7 +63,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
     onSubmit({
       ...formData,
       price: parseFloat(formData.price) || 0,
-      date: new Date(formData.date).toISOString()
+      date: formData.date
     });
   };
 
@@ -100,10 +106,10 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-zinc-500 mb-1">Date & Time</label>
+              <label className="block text-sm font-medium text-zinc-500 mb-1">Date</label>
               <input
                 required
-                type="datetime-local"
+                type="date"
                 value={formData.date}
                 onChange={e => setFormData({ ...formData, date: e.target.value })}
                 className="w-full p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none focus:ring-2 focus:ring-indigo-500 outline-none"
@@ -114,7 +120,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
               <select
                 value={formData.ticketType}
                 onChange={e => setFormData({ ...formData, ticketType: e.target.value as TicketType })}
-                className="w-full p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full h-12 p-3 pr-10 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none appearance-none focus:ring-2 focus:ring-indigo-500 outline-none"
               >
                 {TICKET_TYPES.map(type => (
                   <option key={type} value={type}>{type}</option>
@@ -140,7 +146,7 @@ export const ConcertForm: React.FC<ConcertFormProps> = ({
               <select
                 value={formData.currency}
                 onChange={e => setFormData({ ...formData, currency: e.target.value as Currency })}
-                className="w-full p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full h-12 p-3 pr-10 rounded-xl bg-zinc-100 dark:bg-zinc-900 border-none appearance-none focus:ring-2 focus:ring-indigo-500 outline-none"
               >
                 {CURRENCIES.map(currency => (
                   <option key={currency} value={currency}>{currency}</option>
